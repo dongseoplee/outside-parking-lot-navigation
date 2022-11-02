@@ -218,4 +218,4 @@ if __name__ == "__main__":
     # elif len(left_parkingLot) != 0:    #좌측에 빈자리가 있다면
     #    left_parkingLot = right_empty(drone, right_parkingLot, left_parkingLot)
     # else:  #좌우측 빈자리 없음
-    #    drone.rotate_clockwise(360)
+    #    drone.rotate_clockwise(36
