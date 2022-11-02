@@ -229,9 +229,3 @@ if __name__ == "__main__":
 
     else: # 주차 왼쪽 라인, 오른쪽 라인 모두 빈자리 없을때
         drone.rotate_clockwise(360)
-
-
-
-
-
-
