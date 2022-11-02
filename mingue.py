@@ -116,7 +116,7 @@ def moveToNextParkingLot(drone):
     drone.rotate_clockwise(180)
 
 
-#
+##
 def find_parking_left(drone):
 
     cnt = 5
