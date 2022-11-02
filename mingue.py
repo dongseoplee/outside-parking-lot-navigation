@@ -159,40 +159,57 @@ def find_parking_left(drone):
 
     return left_parkingLot  # parkingLot list에 False 값인 인덱스 위치는 주차구역에 자동차가 있는 구역
 
+def rightLine_empty(drone, right_parkingLot):
+    #오른쪽 주차 자리 6칸
+    # T T T F T T
+    for i in range(6):
+        if right_parkingLot[i]:
+            drone.takeoff()
 
-def right_empty(drone, empty):  # 운전자에게 오른쪽 빈자리로 가서 알려주기
-    drone.g(-30, 230, 0, 50)
-    drone.rotate_counter_clockwise(220)
+            drone.move_up(150)
+            drone.g(-30, 280, 0, 50)  # xyz -500 ~ 500 speed 10 ~100
+            drone.g(-30, 280, 0, 50)
+            drone.rotate_counter_clockwise(220)
+            for r in range(i):
+                drone.move_forward(220)
+            drone.flip_forward()
+            drone.flip_back()
+            right_parkingLot[i] = False
+            drone.rotate_clockwise(220)
+            for r in range(i):
+                drone.move_forward(220)
+            drone.g(30, -280, 0, 50)
+            drone.g(30, -280, 0, 50)
+            break
 
-    if empty[0] == 0:  # 첫번째 list에서 빈자리가 우측 0번째일 때
+    return right_parkingLot # F T T F T T
 
-        drone.flip_back()  # flip로 빈자리 알려줌
-        drone.flip_forward()
+def leftLine_empty(drone, left_parkingLot):
+    #왼쪽 주차 자리 5칸
+    # T T T F T
+    for i in range(5):
+        if left_parkingLot[i]:
+            drone.takeoff()
 
-        drone.rotate_clockwise(220)  # 왔던길 다시 돌아감.
-        drone.g(-30, -230, 0, 50)
-        drone.land()
+            drone.move_up(150)
+            drone.g(30, 400, 0, 50)  # xyz -500 ~ 500 speed 10 ~100
+            drone.g(30, 4000, 0, 50)
+            drone.rotate_counter_clockwise(220)
+            for r in range(i):
+                drone.move_forward(220)
+            drone.flip_forward()
+            drone.flip_back()
+            left_parkingLot[i] = False
+            drone.rotate_clockwise(220)
+            for r in range(i):
+                drone.move_forward(220)
+            drone.g(-30, -400, 0, 50)
+            drone.g(-30, -400, 0, 50)
+            break
 
-        del empty[0]  # list에서 첫번째 값 뺴서 빈자리 제거
-        return empty
+    return left_parkingLot # F T T F T
 
-    else:
-        num = empty[0]  # 빈자리 받기
-        for i in range(num):  # 빈자리 앞으로 이동
-            drone.move_forward(220)
 
-        drone.flip_back()  # 빈자리 flip으로 알려줌
-        drone.flip_forward()
-
-        drone.rotate_clockwise(220)  # 되돌아가기
-        for i in range(num):
-            drone.move_forward(220)
-
-        drone.g(-30, -230, 0, 50)
-        drone.land()
-
-        del empty[0]  # list에서 첫번째 값 뺴서 빈자리 제거
-        return empty
 
 
 
@@ -211,11 +228,13 @@ if __name__ == "__main__":
     print("left_empty", left_parkingLot)
 
 
-    # left_parkingLot = find_parking_left(drone)  #주차장 좌측 빈자리 확인
-    # print("left", left_parkingLot)
-    # if len(right_parkingLot) != 0:   #우측에 빈자리가 있다면
-    #    right_parkingLot = right_empty(drone, right_parkingLot, right_parkingLot)
-    # elif len(left_parkingLot) != 0:    #좌측에 빈자리가 있다면
-    #    left_parkingLot = right_empty(drone, right_parkingLot, left_parkingLot)
-    # else:  #좌우측 빈자리 없음
-    #    drone.rotate_clockwise(36
+    #####차량 출입 시 실행되어야 할 함수 rightLine_empty
+    if True in right_parkingLot: # 빈자리 있는 경우
+        right_parkingLot = rightLine_empty(drone, right_parkingLot)
+
+    elif True in left_parkingLot:
+        left_parkingLot = leftLine_empty(drone, left_parkingLot)
+
+    else: # 주차 왼쪽 라인, 오른쪽 라인 모두 빈자리 없을때
+        drone.rotate_clockwise(360)
+
