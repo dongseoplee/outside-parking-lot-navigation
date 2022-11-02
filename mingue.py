@@ -4,7 +4,7 @@ import cv2
 import time
 import io
 import os
-# from google.cloud import vision
+#from google.cloud import vision
 from djitellopy import tello
 from utils import *
 from yolo import *
@@ -111,6 +111,8 @@ def find_parking_right(drone):
 
     return right_parkingLot  # parkingLot list에 False 값인 인덱스 위치는 주차구역에 자동차가 있는 구역
 
+
+
 def moveToNextParkingLot(drone):
     drone.move_left(400)
     drone.rotate_clockwise(180)
@@ -193,7 +195,11 @@ def right_empty(drone, empty):  # 운전자에게 오른쪽 빈자리로 가서 
         return empty
 
 
+
+
+
 if __name__ == "__main__":
+
     drone = tello.Tello()
     drone.connect()
     print(drone.get_battery())
@@ -204,14 +210,12 @@ if __name__ == "__main__":
     left_parkingLot = find_parking_right(drone)
     print("left_empty", left_parkingLot)
 
+
     # left_parkingLot = find_parking_left(drone)  #주차장 좌측 빈자리 확인
     # print("left", left_parkingLot)
-
     # if len(right_parkingLot) != 0:   #우측에 빈자리가 있다면
     #    right_parkingLot = right_empty(drone, right_parkingLot, right_parkingLot)
-
     # elif len(left_parkingLot) != 0:    #좌측에 빈자리가 있다면
     #    left_parkingLot = right_empty(drone, right_parkingLot, left_parkingLot)
-
     # else:  #좌우측 빈자리 없음
     #    drone.rotate_clockwise(360)
